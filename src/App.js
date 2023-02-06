@@ -1,25 +1,77 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { Button, Checkbox, Table } from "antd";
+import { useState } from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    // Checkbox
+    const onChange = (e) => {
+        const { name, checked } = e.target;
+        setColumns(
+            columns.map((item) => {
+                if (item.title === name) {
+                    return { ...item, hidden: !item.hidden };
+                } else {
+                    return item;
+                }
+            })
+        );
+    };
+
+    // Tabele
+    const dataSource = [
+        {
+            key: "1",
+            name: "Mike",
+            age: 32,
+            address: "10 Downing Street",
+        },
+        {
+            key: "2",
+            name: "John",
+            age: 42,
+            address: "10 Downing Street",
+        },
+    ];
+
+    const [columns, setColumns] = useState([
+        {
+            title: "Name",
+            dataIndex: "name",
+            key: "name",
+            hidden: false,
+        },
+        {
+            title: "Age",
+            dataIndex: "age",
+            key: "age",
+            hidden: false,
+        },
+        {
+            title: "Address",
+            dataIndex: "address",
+            key: "address",
+            hidden: false,
+        },
+        {
+            title: "Detail",
+            render: () => <Button>tes</Button>,
+        },
+    ]);
+
+    const filterColumns = columns.filter((item) => !item.hidden);
+
+    return (
+        <div style={{ padding: "100px" }}>
+            {console.log(columns)}
+            <Checkbox onChange={onChange} name={"Address"} defaultChecked={true}>
+                Address
+            </Checkbox>
+            <Checkbox onChange={onChange} name={"Age"} defaultChecked={true}>
+                Age
+            </Checkbox>
+            <Table dataSource={dataSource} columns={filterColumns} />;
+        </div>
+    );
 }
 
 export default App;
